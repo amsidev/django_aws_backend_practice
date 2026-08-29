@@ -1,0 +1,47 @@
+# Entorno virtual
+.env
+.venv/
+venv/
+env/
+ENV/
+*.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+coverage.xml
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Django
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+# static/
+
+# Secrets / local config
+.env
+.env.*
+secrets
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
