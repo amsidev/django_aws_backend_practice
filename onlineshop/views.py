@@ -11,9 +11,9 @@ class OrderView(APIView):
     def get(self, request):
         try:
             orders = Order.objects.all()
-            seializer = OrderSerializer(orders, many=True)
+            serializer = OrderSerializer(orders, many=True)
             return Response({
-                'data': seializer.orders,
+                'data': serializer.data,
                 'message': 'Orders data fetched sucessfully'
             }, status = status.HTTP_200_OK)
         except:
