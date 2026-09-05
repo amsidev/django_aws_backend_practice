@@ -1,3 +1,5 @@
+import email
+
 from django.shortcuts import render
 from .models import Order
 from .serializers import OrderSerializer
@@ -5,6 +7,9 @@ from .serializers import OrderSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 class OrderView(APIView):
@@ -27,13 +32,27 @@ class OrderView(APIView):
             data = request.data
             serializer = OrderSerializer(data=data)
 
-            if not serializer.s_valid():
+            if not serializer.is_valid():
                 return Response({
                     'data': serializer.errors,
-                    'message': 'Something went wrong while fetching the data'
+                    'message': 'Invalid order data'
                 }, status = status.HTTP_400_BAD_REQUEST)
 
-            serializer.save()
+            order = serializer.save()
+            subject = 'New Order Placed'
+            message = (
+                f'Dear customer {order.customer_name}, your order has been '
+                f'placed successfully. Your order id is {order.id}. '
+                'Thank you for shopping with us.'
+            )
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [order.customer_email],
+                fail_silently=False,
+            )
+
             return Response({
                 'data': serializer.data,
                 'message': 'New order is created or Placed successfully'
